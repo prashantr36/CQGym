@@ -1,5 +1,5 @@
 from CqGym.Gym import CqsimEnv
-from Models.A2C import A2C
+from Models.PPO import PPO
 import numpy as np
 import torch
 import torch.optim as optim
@@ -22,12 +22,11 @@ def model_training(env, weights_file_name=None, is_training=False, output_file_n
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
     num_inputs = window_size * 2 + sys_size * 1
-    a2c = A2C(env, num_inputs, window_size, std=0.0, window_size=window_size,
+    ppo = PPO(env, num_inputs, window_size, std=0.0, window_size=window_size,
               learning_rate=learning_rate, gamma=gamma, batch_size=batch_size, layer_size=layer_size)
-    optimizer = optim.Adam(a2c.parameters(), lr=learning_rate)
 
     if weights_file_name:
-        a2c.load_using_model_name(weights_file_name)
+        ppo.load_using_model_name(weights_file_name)
 
     obs = env.get_state()
     done = False
@@ -38,27 +37,30 @@ def model_training(env, weights_file_name=None, is_training=False, output_file_n
 
         state = torch.FloatTensor(obs.feature_vector).to(device)
 
-        probs, value = a2c(state)
+        probs, value = ppo.select_action(state)
+
+        action_p = torch.softmax(probs.detach(), dim=-1)
 
         action = get_action_from_output_vector(
             probs.detach(), obs.wait_que_size, is_training)
 
         new_obs, done, reward = env.step(action)
+        next_state = torch.FloatTensor(new_obs.feature_vector).to(device)
 
-        a2c.remember(probs, value, reward, done, device, action)
+        ppo.remember(probs, value, reward, done, device,
+                     action, state, next_state, action_p, obs)
         if is_training and not done:
-            next_state = torch.FloatTensor(new_obs.feature_vector).to(device)
-            _, next_value = a2c(next_state)
-            a2c.train(next_value, optimizer)
+            ppo.train()
         obs = new_obs
 
     if is_training and output_file_name:
-        a2c.save_using_model_name(output_file_name)
+        ppo.save_using_model_name(output_file_name)
 
-    return a2c.reward_seq
+    return ppo.reward_seq
+
 
 def model_engine(module_list, module_debug, job_cols=0, window_size=0, sys_size=0,
-                 is_training=False, weights_file=None, output_file=None, do_render=False, learning_rate=0.1, reward_discount=0.99, batch_size=10, layer_size=[]):
+                 is_training=False, weights_file=None, output_file=None, do_render=False, learning_rate=0.00001, reward_discount=0.99, batch_size=10, layer_size=[]):
     """
    Execute the CqSim Simulator using OpenAi based Gym Environment with Scheduling implemented using DeepRL Engine.
 

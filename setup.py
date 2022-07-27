@@ -71,7 +71,7 @@ setup(
     author="Prashant Ravi",
     author_email='prashant.ravi@gmail.com',
     license='MIT',
-    packages=find_packages(where="rlsched"),
+    packages=find_packages(where="cqgym"),
     package_dir={"": "cqgym"},
     zip_safe=False,
     install_requires=requires_list,

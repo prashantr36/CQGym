@@ -343,8 +343,6 @@ def parse():
 def evaluate(opts):
     temp_opt = {'alg': [], 'alg_sign': [], 'bf_para': [], 'win_para': [], 'ad_win_para': [], 'ad_bf_para': [],
                 'ad_alg_para': []}
-    import pdb
-    pdb.set_trace()
     inputPara = {}
     inputPara_sys = {}
     inputPara_name = {}

@@ -1,5 +1,5 @@
 Keras==2.8.0rc0
-matplotlib==3.5.2
+matplotlib==3.5.1
 pandas==1.2.3
 tensorflow==2.8.0
 tensorboardx==2.4

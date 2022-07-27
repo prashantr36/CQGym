@@ -1,8 +1,7 @@
 import os
-import cqgym.IOModule.Debug_log as Class_Debug_log
-import cqgym.IOModule.Output_log as Class_Output_log
+import IOModule.Debug_log as Class_Debug_log
+import IOModule.Output_log as Class_Output_log
 from time import time
-
 import CqSim.Job_trace as Class_Job_trace
 import CqSim.Backfill as Class_Backfill
 import CqSim.Start_window as Class_Start_window
@@ -14,13 +13,12 @@ import Extend.SWF.Filter_node_SWF as filter_node_ext
 import Extend.SWF.Node_struc_SWF as node_struc_ext
 
 import Trainer.PG_Trainer as pg_trainer
-import Trainer.A2C_Trainer as a2c_trainer
-import Trainer.DQL_Trainer as dql_trainer
-import Trainer.PPO_Trainer as ppo_trainer
 import Trainer.FCFS as FCFS
 
 
 def cqsim_main(para_list):
+    import pdb
+    pdb.set_trace()
     print("....................")
     for item in para_list:
         print(str(item) + ": " + str(para_list[item]))
@@ -148,9 +146,6 @@ def cqsim_main(para_list):
     reward_seq = []
     if para_list['rl_alg'] == 'PPO':
         reward_seq = ppo_trainer.model_engine(module_list, module_debug, job_cols, window_size, module_node_struc.tot,
-                        is_training, input_weight_file, output_weight_file, do_render, learning_rate, reward_discount, batch_size, layer_size)
-    elif para_list['rl_alg'] == 'A2C':
-        reward_seq = a2c_trainer.model_engine(module_list, module_debug, job_cols, window_size, module_node_struc.tot,
                         is_training, input_weight_file, output_weight_file, do_render, learning_rate, reward_discount, batch_size, layer_size)
     elif para_list['rl_alg'] == 'DQL':
         reward_seq = dql_trainer.model_engine(module_list, module_debug, job_cols, window_size, module_node_struc.tot,
