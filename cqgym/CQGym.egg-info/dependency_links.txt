@@ -1,0 +1,2 @@
+https://download.pytorch.org/whl/cu115/torch_stable.html
+https://github.com/path/to/package-two@41b95ec#egg=package-two

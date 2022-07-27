@@ -1,0 +1,8 @@
+README.md
+setup.py
+cqgym/CQGym.egg-info/PKG-INFO
+cqgym/CQGym.egg-info/SOURCES.txt
+cqgym/CQGym.egg-info/dependency_links.txt
+cqgym/CQGym.egg-info/not-zip-safe
+cqgym/CQGym.egg-info/requires.txt
+cqgym/CQGym.egg-info/top_level.txt
