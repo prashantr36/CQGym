@@ -12,6 +12,8 @@ import Extend.SWF.Filter_job_SWF as filter_job_ext
 import Extend.SWF.Filter_node_SWF as filter_node_ext
 import Extend.SWF.Node_struc_SWF as node_struc_ext
 
+import Trainer.PPO_Trainer as ppo_trainer
+import Trainer.DQL_Trainer as dql_trainer
 import Trainer.PG_Trainer as pg_trainer
 import Trainer.FCFS as FCFS
 
