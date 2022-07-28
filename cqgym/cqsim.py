@@ -60,6 +60,9 @@ class Option(optparse.Option):
     TYPE_CHECKER['date'] = check_date
 
 
+temp_opt = {'alg': [], 'alg_sign': [], 'bf_para': [], 'win_para': [], 'ad_win_para': [], 'ad_bf_para': [],
+            'ad_alg_para': []}
+
 def callback_alg(option, opt_str, value, parser):
     temp_opt['alg'].append(value)
     return
@@ -341,8 +344,7 @@ def parse():
 
 
 def evaluate(opts):
-    temp_opt = {'alg': [], 'alg_sign': [], 'bf_para': [], 'win_para': [], 'ad_win_para': [], 'ad_bf_para': [],
-                'ad_alg_para': []}
+    
     inputPara = {}
     inputPara_sys = {}
     inputPara_name = {}
@@ -374,15 +376,12 @@ def evaluate(opts):
 
     if not opts.job_trace and not opts.job_save and not inputPara_sys["job_trace"]:
         print("Error: Please specify an original job trace or a formatted job data!")
-        p.print_help()
         sys.exit()
     if not opts.node_struc and not opts.node_save and not inputPara_sys["node_struc"]:
         print("Error: Please specify an original node structure or a formatted node data!")
-        p.print_help()
         sys.exit()
     if not opts.alg and not inputPara_sys["alg"]:
         print("Error: Please specify the algorithm element!")
-        p.print_help()
         sys.exit()
 
     if not opts.job_trace:

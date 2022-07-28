@@ -17,8 +17,6 @@ import Trainer.FCFS as FCFS
 
 
 def cqsim_main(para_list):
-    import pdb
-    pdb.set_trace()
     print("....................")
     for item in para_list:
         print(str(item) + ": " + str(para_list[item]))

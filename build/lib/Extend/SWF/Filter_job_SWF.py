@@ -1,6 +1,7 @@
 from datetime import datetime
 import time
 import re
+import os
 
 import Filter.Filter_job as filter_job
 
@@ -20,7 +21,6 @@ class Filter_job_SWF(filter_job.Filter_job):
         if not self.save:
             print("Save file not set!")
             return
-        
         sep_sign = ";"
         f2=open(self.save, "w")
 
@@ -115,7 +115,6 @@ class Filter_job_SWF(filter_job.Filter_job):
                             if not con_data['name'] and con_data['name_config'] == 'start_offset':
                                 con_data['value'] = min_sub-self.start
                                 break
-                            
                     tempInfo = {'id':int(ID),\
                                 'submit':self.density*(float(submit)-min_sub)+self.start,\
                                 'wait':float(wait),\
@@ -143,6 +142,7 @@ class Filter_job_SWF(filter_job.Filter_job):
                     # state: 0: not submit  1: waiting  2: running  3: done
                                         
                     if (self.input_check(tempInfo)>=0):
+                        f2.flush()
                         f2.write(str(tempInfo['id']))
                         f2.write(sep_sign)
                         f2.write(str(tempInfo['submit']))
@@ -179,9 +179,11 @@ class Filter_job_SWF(filter_job.Filter_job):
                         f2.write(sep_sign)
                         f2.write(str(tempInfo['thinkTime']))
                         f2.write("\n")
-                        #self.jobList.append(tempInfo)
+                
+                        self.jobList.append(tempInfo)
                         temp_readNum+=1
                         #job_num += 1
+                self.jobList = []
                 temp_start += 1
             else:
                 for con_data in self.config_data:
@@ -334,6 +336,10 @@ class Filter_job_SWF(filter_job.Filter_job):
         self.jobNum = len(self.jobList)
     
     def input_check(self,jobInfo):
+        if(int(jobInfo['reqProc']) < 0):
+            jobInfo['reqProc'] = jobInfo['usedProc']
+        if(int(jobInfo['reqTime']) < 0):
+            jobInfo['reqTime'] = jobInfo['run']
         if (int(jobInfo['run'])>int(jobInfo['reqTime'])):
             jobInfo['run']=jobInfo['reqTime']
         if (int(jobInfo['id'])<=0):
@@ -355,7 +361,6 @@ class Filter_job_SWF(filter_job.Filter_job):
         
         sep_sign = ";"
         f2=open(self.save,"w")
-        
         for jobResult_o in self.jobList:
             f2.write(str(jobResult_o['id']))
             f2.write(sep_sign)

@@ -75,6 +75,7 @@ for v in ver:
   for a in alg:
     r = 0
     train_opts = {'job_trace': 'lublin_256.swf' , 
+                  'node_struc': 'lublin_256.swf',
                   'node_save': 'lublin_256.swf',
                   'read': 1500 , 'is_training': 1 ,
                   'rl_alg': "$a", 'learning_rate': lr ,
@@ -86,46 +87,54 @@ for v in ver:
     train_opts.update(opts)
     train_opts.update(temp)
     cqsim.evaluate(dotdict(train_opts));
-    for i in range(1, 10):
+    for i in range(1, 3):
       o=i+1 
       r=750*i
       train_opts = {'job_trace': 'lublin_256.swf' , 
+                    'node_struc': 'lublin_256.swf',
                     'node_save': 'lublin_256.swf',
                     'read': 1500 , 'is_training': 1 ,
                     'rl_alg': "$a", 'learning_rate': lr ,
                     'reward_discount': 0.99, 'batch_size': 50,
-                    'input_weight_file' : "v" + "a" +"-" + (i-1),
+                    'input_weight_file' : "v" + "a" +"-" + str(i-1),
                     'window_size': 20, 
-                    'output_weight_file': "v" + "a" +"-" + (i),
-                    'anchor': r}
-      cqsim.evaluate(dotdict(train_opts));
-    for i in range(11, 20):
-      o=i+1 
-      r=750*i
-      train_opts = {'job_trace': 'lublin_256.swf' , 
-                    'node_save': 'lublin_256.swf',
-                    'read': 1500 , 'is_training': 1 ,
-                    'rl_alg': "$a", 'learning_rate': lr ,
-                    'reward_discount': 0.99, 'batch_size': 50,
-                    'window_size': 20, 
-                    'output_weight_file': "v" + "a" +"-0",
+                    'output_weight_file': "v" + "a" +"-" + str(i),
                     'anchor': r}
       temp = train_opts.copy()
       train_opts.update(opts)
       train_opts.update(temp)
       cqsim.evaluate(dotdict(train_opts));
-    for i in range(21, 100):  
+    """
+    for i in range(9, 18):
       o=i+1 
       r=750*i
-      train_opts = {'job_trace': 'lublin_256.swf' , 
-                    'node_save': 'lublin_256.swf',
+      train_opts = {'job_trace': 'train.swf' , 
+                    'node_save': 'train.swf',
                     'read': 1500 , 'is_training': 1 ,
                     'rl_alg': "$a", 'learning_rate': lr ,
                     'reward_discount': 0.99, 'batch_size': 50,
-                    'window_size': 20, 
-                    'output_weight_file': "v" + "a" +"-0",
+                    'window_size': 20,
+                    'input_weight_file' : "v" + "a" +"-" + str(i-1),
+                    'output_weight_file': "v" + "a" +"-" + str(i),
                     'anchor': r}
       temp = train_opts.copy()
       train_opts.update(opts)
       train_opts.update(temp)
       cqsim.evaluate(dotdict(train_opts));
+    for i in range(19, 100):  
+      o=i+1 
+      r=750*i
+      train_opts = {'job_trace': 'train.swf' , 
+                    'node_save': 'train.swf',
+                    'read': 1500 , 'is_training': 1 ,
+                    'rl_alg': "$a", 'learning_rate': lr ,
+                    'reward_discount': 0.99, 'batch_size': 50,
+                    'window_size': 20, 
+                    'input_weight_file' : "v" + "a" +"-" + str(i-1),
+                    'output_weight_file': "v" + "a" +"-" + str(i),
+                    'anchor': r}
+      temp = train_opts.copy()
+      train_opts.update(opts)
+      train_opts.update(temp)
+      cqsim.evaluate(dotdict(train_opts));
+      """

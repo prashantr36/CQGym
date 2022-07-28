@@ -1,2 +1,2 @@
-MaxNodes=4360
-MaxProcs=4360
+MaxNodes=256
+MaxProcs=256

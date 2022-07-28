@@ -60,15 +60,17 @@ class Job_trace:
     def initial_import_job_file(self, job_file):
         self.temp_start=self.start
         #regex_str = "([^;\\n]*)[;\\n]"
+        self.reset(start=-1)
         self.jobFile = open(job_file,'r')
         self.min_sub = -1
         self.jobTrace={}
+        
         self.reset_data()
         self.debug.line(4)
         self.i = 0
         self.j = 0
         #self.dyn_import_job_file()
-
+        
     def dyn_import_job_file(self):
         if self.jobFile.closed:
             return -1
@@ -76,7 +78,7 @@ class Job_trace:
         regex_str = "([^;\\n]*)[;\\n]"
         while (self.i<self.read_num or self.read_num<=0) and temp_n<self.read_input_freq:
             tempStr = self.jobFile.readline()
-            if not tempStr :    # break when no more line
+            if self.i==self.read_num-1 or not tempStr :    # break when no more line
                 self.jobFile.close()
                 return -1
                 #break
@@ -88,7 +90,6 @@ class Job_trace:
                     if (self.temp_start < 0):
                         self.temp_start = self.min_sub
                     self.start_offset_B = self.min_sub-self.temp_start
-                    
                 tempInfo = {'id':int(temp_dataList[0]),\
                             'submit':self.density*(float(temp_dataList[1])-self.min_sub)+self.temp_start,\
                             'wait':float(temp_dataList[2]),\
@@ -121,7 +122,7 @@ class Job_trace:
                 self.i += 1      
             self.j += 1
             temp_n += 1
-            return 0
+        return 0
     
     def import_job_file (self, job_file):
         #self.debug.debug("* "+self.myInfo+" -- import_job_file",5)

@@ -61,6 +61,7 @@ class Cqsim_sim(Pause, Thread):
         self.current_event = None
         self.reserve_job_id = -1
         # obsolete
+        self.module['job'].reset()
         self.job_num = len(self.module['job'].job_info())
         self.currentTime = 0
         # obsolete

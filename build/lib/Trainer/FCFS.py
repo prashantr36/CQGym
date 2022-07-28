@@ -3,7 +3,8 @@ import numpy as np
 
 
 def model_training(env, do_render=False):
-
+    
+    print(env)
     obs = env.get_state()
     done = False
 
@@ -16,7 +17,6 @@ def model_training(env, do_render=False):
                 action = i
                 early_submit = v['submit']
         new_obs, done, reward = env.step(action)
-
 
 def model_engine(module_list, module_debug, job_cols=0, window_size=0, sys_size=0, do_render=False):
     """

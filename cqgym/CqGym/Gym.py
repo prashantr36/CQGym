@@ -83,9 +83,9 @@ class CqsimEnv(Env):
         reward : [float]        :- reward for the current action.
         """
         self.iter += 1
+        reward = 0
         ind = action
         print("Wait Queue at Step Func - ", self.simulator.simulator_wait_que_indices)
-        import pdb; pdb.set_trace()
         self.simulator.simulator_wait_que_indices = [self.simulator.simulator_wait_que_indices[ind]] + \
                                                      self.simulator.simulator_wait_que_indices[:ind] + \
                                                      self.simulator.simulator_wait_que_indices[ind + 1:]
@@ -96,7 +96,6 @@ class CqsimEnv(Env):
 
         # Gym Paused, Running simulator.
         self.simulator.pause_producer()
-
         # Simulator executed with selected action. Retrieving new State.
         if self.simulator.is_simulation_complete:
             # Return an empty state if the Simulation is complete. Avoids NullPointer Exceptions.
